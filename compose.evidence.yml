@@ -1,0 +1,16 @@
+# The environment evidence runs in, locally and in CI: everything the app needs, with test data
+# only (never a copy of production). Docker Compose reference: https://docs.docker.com/reference/compose-file/
+services:
+  web:
+    # Run the app from a stock image with the code mounted, or replace this with build: . (a Dockerfile).
+    image: node:22-bookworm
+    working_dir: /app
+    volumes: ["./:/app"]
+    environment:
+      HOME: /tmp
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 3000"
+  # A database with test data, for example:
+  # db:
+  #   image: postgres:17-alpine
+  #   environment: { POSTGRES_PASSWORD: evidence }
+  #   volumes: ["./test-data.sql:/docker-entrypoint-initdb.d/seed.sql:ro"]

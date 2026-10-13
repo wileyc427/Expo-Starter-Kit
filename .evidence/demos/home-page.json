@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/wileyc427/agentic-evidence/main/schemas/demo.schema.json",
+  "name": "Home page loads",
+  "steps": [
+    { "do": "goto", "path": "/", "title": "Open the home page" },
+    { "do": "expect_visible", "target": "body", "title": "Something is shown" }
+  ]
+}
