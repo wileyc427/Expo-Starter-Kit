@@ -1,0 +1,11 @@
+# How evidence gets an environment. See https://github.com/wileyc427/agentic-evidence/blob/main/schemas/config.schema.json
+version: 2
+# The Docker Compose file that defines the environment (the app, its database, test data…).
+compose: compose.evidence.yml
+app:
+  service: web    # the Compose service the browser opens
+  port: 3000      # the port it listens on inside its container
+  path: /
+# A fresh environment (volumes too) before each demo after the first; slower, but no demo
+# can depend on what an earlier one did.
+# reset: restart
