@@ -1,0 +1,31 @@
+# Records evidence for every pull request (and main): the demos in .evidence/demos,
+# played in the environment compose.evidence.yml defines. https://github.com/wileyc427/agentic-evidence
+name: Evidence
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+  id-token: write # proves to the evidence server that this job recorded the run (no secrets)
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - id: evidence
+        uses: wileyc427/agentic-evidence/action@main
+        with:
+          server: https://agentic-evidence.politemeadow-bf9e525e.eastus.azurecontainerapps.io
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.evidence.outputs.run-dir != ''
+        with:
+          name: evidence
+          path: ${{ steps.evidence.outputs.run-dir }}
